@@ -114,6 +114,7 @@ public class GameTile extends JPanel {
 			break;
 		case ENEMY:
 			this._background = _enemySprite;
+			this._old = this._type;
 			break;
 		case EXPLOSION:
 			this._background = _explosionSprite;

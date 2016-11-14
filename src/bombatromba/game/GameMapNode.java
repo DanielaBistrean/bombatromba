@@ -17,6 +17,9 @@ public class GameMapNode {
 	private GameTileType _type;
 	private int _x, _y;
 	
+	public float f, g, h;
+	public GameMapNode parent;
+	
 	/*
 	 * Public methods
 	 */
@@ -27,6 +30,8 @@ public class GameMapNode {
 		this._type = GameTileType.OBSTACLE;
 		this._x = i;
 		this._y = j;
+		
+		this.f = this.g = this.h = 0;
 	}
 	
 	public boolean initialize(Queue<GameMapNode> updateList) {

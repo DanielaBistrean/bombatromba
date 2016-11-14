@@ -45,6 +45,24 @@ public class GameMap extends Thread{
 		for (int i = 0; i < this._rows + 2; i++) {
 			for (int j = 0; j < this._cols + 2; j++) {
 				this._map[i][j] = new GameMapNode(i, j);
+			}
+		}
+		
+		for (int i = 0; i < this._rows + 2; i++) {
+			for (int j = 0; j < this._cols + 2; j++) {
+				
+//				if (i - 1 > 0)
+//					this._map[i][j].getNeighbours().add(this._map[i - 1][j]);
+//				
+//				if (i + 1 < this._rows + 1)
+//					this._map[i][j].getNeighbours().add(this._map[i + 1][j]);
+//				
+//				if (j - 1 > 0)
+//					this._map[i][j].getNeighbours().add(this._map[i][j - 1]);
+//				
+//				if (j + 1 < this._cols + 1)
+//					this._map[i][j].getNeighbours().add(this._map[i][j + 1]);
+				
 				this._map[i][j].initialize(this._updateQueue);
 				this._nodes.put(new Position(i, j), this._map[i][j]);
 				if (!this._map[i][j].initialize(this._updateQueue)) {
@@ -107,10 +125,10 @@ public class GameMap extends Thread{
 		if (!this._initialized)
 			return null;
 		
-		if (x <= 0 || x >= this._rows -1)
+		if (x < 0 || x >= this._rows + 2)
 			return null;
 		
-		if (y <= 0 || y >= this._cols -1)
+		if (y < 0 || y >= this._cols + 2)
 			return null;
 		
 		return this._map[x][y];
@@ -133,6 +151,9 @@ public class GameMap extends Thread{
 		
 		Position old = new Position(pos.x, pos.y);
 		
+		if (dir == null)
+			return this._nodes.get(pos);
+		
 		switch (dir) {
 		case DOWN:
 			pos.x += 1;
@@ -150,7 +171,7 @@ public class GameMap extends Thread{
 			break;
 		}
 		
-		System.out.println("action " + dir + " changed " + old + " to " + pos);
+		//System.out.println("action " + dir + " changed " + old + " to " + pos);
 		
 		return this._nodes.get(pos);
 	}

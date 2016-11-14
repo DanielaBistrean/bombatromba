@@ -5,6 +5,8 @@ import bombatromba.game.GameCharacter;
 import bombatromba.game.GameCharacterType;
 import bombatromba.game.GameEngine;
 import bombatromba.game.GameMap;
+import bombatromba.game.ai.AIAgent;
+import bombatromba.game.ai.AStarAlgorithm;
 import bombatromba.graphics.layout.GameLayout;
 import bombatromba.graphics.ui.MainForm;
 
@@ -29,11 +31,14 @@ public class MainClass {
 		
 		GameCharacter player = new GameCharacter(GameCharacterType.PLAYER);
 		GameCharacter enemy1 = new GameCharacter(GameCharacterType.ENEMY);
-		GameCharacter enemy2 = new GameCharacter(GameCharacterType.ENEMY);
+		enemy1.setTarget(player);
+		
+		AIAgent agent1 = new AIAgent(new AStarAlgorithm(enemy1, gameMap), enemy1, gameMap);
+		
+		enemy1.attachAgent(agent1);
 		
 		gameEngine.addCharacter(1, 1, player);
-		gameEngine.addCharacter(10, 20, enemy1);
-		gameEngine.addCharacter(15, 7, enemy2);
+		gameEngine.addCharacter(11, 21, enemy1);
 		
 		/*
 		 * Game starts here
