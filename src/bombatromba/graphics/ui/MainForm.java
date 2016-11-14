@@ -6,6 +6,9 @@ import javax.swing.JFrame;
 
 import bombatromba.config.GameConfig;
 
+/*
+ * clasa ce reprezinta interfata grafica
+ */
 public class MainForm extends JFrame {
 
 	/**
@@ -28,16 +31,19 @@ public class MainForm extends JFrame {
 		this._initialized = false;
 	}
 
+	// metoda care initializeaza interfata grafica
 	public boolean initialize() {
 		this.setTitle("BombaTromba");
 		this.setSize(800, 600);
 		
+		// setam layout ca fiind un layout grid
 		this.setLayout(new GridLayout(GameConfig.ROWS + 2, GameConfig.COLS + 2));
 		
 		this._initialized = true;
 		return true;
 	}
 	
+	// metoda care afiseaza interfata grafica
 	public boolean showGameWindow() {
 		if (!this._initialized)
 			return false;

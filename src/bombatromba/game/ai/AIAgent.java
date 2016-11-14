@@ -7,11 +7,14 @@ import bombatromba.game.GameMap;
 import bombatromba.game.GameMapNode;
 import bombatromba.game.MoveDirection;
 
+/*
+ * clasa care reprezinta un agent inteligent
+ */
 public class AIAgent extends TimerTask {
 
-	private SearchAlgorithm _algorithm;
-	private GameCharacter _character;
-	private GameMap _map;
+	private SearchAlgorithm _algorithm; 	// algoritmul atasat
+	private GameCharacter _character;		// caracterul atasat
+	private GameMap _map;					// harta jocului
 
 	public AIAgent(SearchAlgorithm alg, GameCharacter c, GameMap m) {
 		this._algorithm = alg;
@@ -19,12 +22,16 @@ public class AIAgent extends TimerTask {
 		this._map = m;
 	}
 	
+	// functie care calculeaza urmatoarea miscare a agentului
 	@Override
 	public void run() {
-		System.out.println("computing.......");
+		// rulam algoritmul si luam urmatoarea miscare catre tinta
 		MoveDirection d = this._algorithm.nextStepTowards(this._character.getTarget().getNode());
-		System.out.println("direction: " + d);
+		
+		// luam nodul aferent miscarii
 		GameMapNode next = this._map.getNextNode(this._character.getPosition(), d);
+		
+		// daca nodul e accesibil atunci facem miscarea
 		if (next.isAccesible()) {
 			this._character.move(next);
 			System.out.println("new position: " + this._character.getNode().getPosition());

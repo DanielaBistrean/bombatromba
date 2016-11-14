@@ -6,6 +6,9 @@ import java.awt.event.KeyListener;
 import bombatromba.game.CharacterManager;
 import bombatromba.game.MoveDirection;
 
+/*
+ * clasa care se ocupa de input de la tastatura
+ */
 public class PlayerController implements KeyListener {
 
 	private CharacterManager _manager;

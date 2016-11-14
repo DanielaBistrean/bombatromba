@@ -3,7 +3,6 @@ package bombatromba.game;
 import java.util.ArrayList;
 import java.util.Queue;
 
-import bombatromba.graphics.assets.GameTile;
 import bombatromba.graphics.assets.GameTileType;
 
 public class GameMapNode {
@@ -11,12 +10,13 @@ public class GameMapNode {
 	/*
 	 * Private properties
 	 */
-	private ArrayList<GameMapNode> _neighbours;
-	private Queue<GameMapNode> _updateList;
+	private ArrayList<GameMapNode> _neighbours;		// lista de vecini
+	private Queue<GameMapNode> _updateList;			// referina la coada de actualizari
 	private boolean _initialized;
 	private GameTileType _type;
 	private int _x, _y;
 	
+	// pentru a star
 	public float f, g, h;
 	public GameMapNode parent;
 	
@@ -27,6 +27,7 @@ public class GameMapNode {
 		this._neighbours = null;
 		this._updateList = null;
 		this._initialized = false;
+		// la inceput orice nod este un obstacol
 		this._type = GameTileType.OBSTACLE;
 		this._x = i;
 		this._y = j;
@@ -34,6 +35,7 @@ public class GameMapNode {
 		this.f = this.g = this.h = 0;
 	}
 	
+	// functie care initializeaza nodul pasand referinta la lista de actualizari
 	public boolean initialize(Queue<GameMapNode> updateList) {
 		this._neighbours = new ArrayList<GameMapNode>();
 		this._initialized = true;
@@ -60,6 +62,7 @@ public class GameMapNode {
 		return true;
 	}
 
+	// functie care pregateste actualizarea grafica adaungand pe lista de actualizari nodul curent
 	public boolean updateType(GameTileType newType) {
 		if (!this._initialized)
 			return false;
@@ -74,10 +77,14 @@ public class GameMapNode {
 		return new Position(this._x, this._y);
 	}
 	
+	// functie care intoarce daca nodul este accesibil spre vizitare
 	public boolean isAccesible() {
 		return this._type == GameTileType.EMPTY || this._type == GameTileType.ENEMY || this._type == GameTileType.EXPLOSION;
 	}
 
+	// functie care pregateste restaurarea nodului la starea de dinainte de a fi vizitat de un caracter
+	// de asemenea adauga nodul in lista de actualizari cu starea "undefined" care este o conventie pentru
+	// restaurare
 	public boolean restoreTile() {
 		if (!this._initialized)
 			return false;

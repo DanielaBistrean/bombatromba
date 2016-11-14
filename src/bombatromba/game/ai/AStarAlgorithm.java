@@ -1,9 +1,7 @@
 package bombatromba.game.ai;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 import bombatromba.config.GameConfig;
@@ -12,29 +10,15 @@ import bombatromba.game.GameMap;
 import bombatromba.game.GameMapNode;
 import bombatromba.game.MoveDirection;
 import bombatromba.game.Position;
-import bombatromba.graphics.assets.GameTileType;
 
+/*
+ * Implementare a algorimtului A star pe un thread separat
+ */
 public class AStarAlgorithm extends Thread implements SearchAlgorithm {
 
-	private class Score {
-		public float f;
-		public float g;
-		public float h;
-		
-		public Score() {
-			this.g = this.f = this.h = 0;
-		}
-		
-		public Score(float f, float g, float h) {
-			this.g = g;
-			this.h = h;
-			this.f = f;
-		}
-	}
-	
+
 	private PriorityQueue<GameMapNode> _open;
 	private ArrayList<GameMapNode> _closed;
-	private Score[][] _scores;
 	private GameMapNode _next;
 	private GameMap _map;
 	
@@ -42,7 +26,6 @@ public class AStarAlgorithm extends Thread implements SearchAlgorithm {
 		
 	public AStarAlgorithm(GameCharacter character, GameMap map) {
 		this._current = character;
-		this._scores = new Score[GameConfig.ROWS][GameConfig.COLS];
 		this._map = map;
 		this._open = new PriorityQueue<GameMapNode>(new Comparator<GameMapNode>() {
 
@@ -61,6 +44,7 @@ public class AStarAlgorithm extends Thread implements SearchAlgorithm {
 		
 	}
 	
+	// implementarea propriuzisa a algortmului
 	private void _astar(GameMapNode destination) {
 		
 		int idest = destination.getPosition().x;
@@ -143,17 +127,21 @@ public class AStarAlgorithm extends Thread implements SearchAlgorithm {
 			p = p.parent;
 		}
 		
+		// in next retinem urmatoarea miscare pe care trebuie sa o faca agentul
 		this._next = p;
 	}
 	
+	// functie apelata pentru a stabili urmatoarea miscare a agentului inteligent
 	@Override
 	public MoveDirection nextStepTowards(GameMapNode destination) {
 		
 		System.out.println("==================================================");
 		this._next = null;
+		// apelam algoritmul
 		this._astar(destination);
 		
-		System.out.println("next: " + this._next.getPosition());
+		// calculam directia in functie de pozitia curenta si cea urmatoare
+		// daca pozitia urmatoare nu este printre vecinii celei curente atunci avem o problema
 		if (this._current.getNode().getNeighbours().contains(this._next)) {
 			int cx = this._current.getPosition().x;
 			int cy = this._current.getPosition().y;

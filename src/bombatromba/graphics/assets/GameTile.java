@@ -10,6 +10,9 @@ import javax.swing.JPanel;
 
 import bombatromba.config.GameConfig;
 
+/*
+ * clasa care reprezinta un bloc vizual pe ecran
+ */
 public class GameTile extends JPanel {
 
 	/**
@@ -20,9 +23,13 @@ public class GameTile extends JPanel {
 	/*
 	 * Private properties
 	 */
+	
+	// tipul si fundalul blocului
 	private GameTileType _type;
 	private Image _background;
 	private boolean _initialized;
+	
+	// imaginile de fundal (statice)
 	private static Image _bombSprite = null;
 	private static Image _playerSprite = null;
 	private static Image _enemySprite = null;
@@ -35,8 +42,12 @@ public class GameTile extends JPanel {
 	/*
 	 * Private methods
 	 */
+	
+	// functie statica folosita pentru a incerca imaginile
 	private static boolean _initAssets() {
 		boolean result = true;
+		
+		// incarcam fiecare sprite din fisier
 		File bombSpriteFile = new File(GameConfig.BOMBSPRITE_FILE);
 		File playerSpriteFile = new File(GameConfig.PLAYERSPRITE_FILE);
 		File enemySpriteFile = new File(GameConfig.ENEMYSPRITE_FILE);
@@ -45,6 +56,7 @@ public class GameTile extends JPanel {
 		File explosionSpriteFile = new File(GameConfig.EXPLOSIONSPRITE_FILE);
 		File emptySpriteFile = new File(GameConfig.EMPTYSPRITE_FILE);
 		
+		// incercam sa incarcam imaginile
 		try {
 			_bombSprite = ImageIO.read(bombSpriteFile);
 			_playerSprite = ImageIO.read(playerSpriteFile);
@@ -65,6 +77,8 @@ public class GameTile extends JPanel {
 	/*
 	 * Protected methods
 	 */
+	// metoda apelata automat de sistem
+	// ne asiguram ca pictam fundalul
 	@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -81,6 +95,7 @@ public class GameTile extends JPanel {
 		this._old = null;
 	}
 	
+	// metoda care initializeaza blocul grafic cu tipul obstacol (by default)
 	public boolean initialize() {
 		boolean result;
 		
@@ -98,12 +113,15 @@ public class GameTile extends JPanel {
 		return this._type;
 	}
 
+	
+	// setam un bloc grafic
 	public GameTileType setType(GameTileType newType) {
 		if (!this._initialized)
 			return null;
 		
 		switch (newType) {
 		case BOMB:
+			// in caz ca e bomba vrem sa ramana bomba orice ar fi
 			this._background = _bombSprite;
 			this._old = newType;
 			break;
@@ -114,6 +132,7 @@ public class GameTile extends JPanel {
 			this._background = _emptySprite;
 			break;
 		case ENEMY:
+			// in caz e ca jucator sau disman, vrem sa ramana ce era inainte dupa ce pleaca
 			this._background = _enemySprite;
 			this._old = this._type;
 			break;
@@ -122,31 +141,32 @@ public class GameTile extends JPanel {
 			break;
 		case PLAYER:
 			this._background = _playerSprite;
-			if (this._type != GameTileType.BOMB)
 				this._old = this._type;
-			else
-				this._old = GameTileType.BOMB;
 			break;
 		case OBSTACLE:
 			this._background = _obstacleSprite;
 			break;
 		case UNDEFINED:
 		default:
+			// in orice alt caz sau nedefinit, vrem sa intoarcem blocul la starea de dinainte
 			System.out.println("attempting to restore tile");
 			return this.restoreType();
 		}
 			
-		
+		// setam starea si logic
+		// revalidam si pictam
 		this._type = newType;
 		this.revalidate();
 		this.repaint();
 		return newType;
 	}
 	
+	// functie care restaureaza starea
 	public GameTileType restoreType() {
 		if (!this._initialized || this._old == null)
 			return null;
 		
+		// setam starea cu cea veche
 		GameTileType res = this.setType(this._old);
 		System.out.println("restoring tile to " + this._old + " exited with " + res);
 		this._old = null;

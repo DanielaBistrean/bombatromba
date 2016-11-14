@@ -1,22 +1,22 @@
 package bombatromba.graphics.layout;
 
-import java.util.Random;
-
 import javax.swing.JFrame;
 
-import bombatromba.config.GameConfig;
 import bombatromba.graphics.assets.GameTile;
 import bombatromba.graphics.assets.GameTileType;
 
+/*
+ * Clasa care tine aseazarea blocurilor grafice in pagina
+ */
 public class GameLayout implements LayoutManager {
 
 	/*
 	 * Private properties
 	 */
-	private GameTile[][] _tiles;
-	private int _rows, _cols;
+	private GameTile[][] _tiles;		// blocurile grafice
+	private int _rows, _cols;			// dimensiunile
 	private boolean _initialized;
-	private JFrame _gameWindow;
+	private JFrame _gameWindow;			// fereastra grafica
 	
 	/*
 	 * Public methods
@@ -31,6 +31,7 @@ public class GameLayout implements LayoutManager {
 		this._initialized = false;
 	}
 	
+	// initializam layout-ul
 	public boolean initialize(JFrame gameWindow) {
 		
 		if (gameWindow == null)
@@ -43,18 +44,22 @@ public class GameLayout implements LayoutManager {
 		return true;
 	}
 
+	// metoda care schimba grafic un bloc pe ecran
 	@Override
 	public GameTileType updateTile(int row, int col, GameTileType newType) {
 		if (!this._initialized)
 			return null;
 		
+		// daca nu exista inca blocul, in facem
 		if (this._tiles[row][col] == null) {
 			this._tiles[row][col] = new GameTile();
+			// de asemenea il initializam
 			if (!this._tiles[row][col].initialize()) {
 				System.out.println("error initializing tile (" + row + "," + col + ")");
 				return null;
 			}
 			
+			// si il adaugam la ecran
 			this._gameWindow.getContentPane().add(this._tiles[row][col]);
 		}
 
@@ -64,6 +69,7 @@ public class GameLayout implements LayoutManager {
 		if (col < 0 || col >= this._cols + 2)
 			return null;
 		
+		// ii setam noul tip
 		GameTileType confirm = this._tiles[row][col].setType(newType);
 		
 		if (confirm == null) {
@@ -71,6 +77,8 @@ public class GameLayout implements LayoutManager {
 			return null;
 		}
 		
+		
+		// revalidam si pictam
 		this._gameWindow.revalidate();
 		this._gameWindow.repaint();
 		return confirm;
