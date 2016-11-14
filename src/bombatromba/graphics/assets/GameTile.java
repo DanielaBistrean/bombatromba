@@ -105,6 +105,7 @@ public class GameTile extends JPanel {
 		switch (newType) {
 		case BOMB:
 			this._background = _bombSprite;
+			this._old = newType;
 			break;
 		case BRICK:
 			this._background = _brickSprite;
@@ -121,7 +122,10 @@ public class GameTile extends JPanel {
 			break;
 		case PLAYER:
 			this._background = _playerSprite;
-			this._old = this._type;
+			if (this._type != GameTileType.BOMB)
+				this._old = this._type;
+			else
+				this._old = GameTileType.BOMB;
 			break;
 		case OBSTACLE:
 			this._background = _obstacleSprite;

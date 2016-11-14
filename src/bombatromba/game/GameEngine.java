@@ -73,4 +73,14 @@ public class GameEngine implements CharacterManager{
 		}
 		
 	}
+
+	@Override
+	public void notifyBomb() {
+		if (this._player.getNode().getType() != GameTileType.OBSTACLE ||
+				this._player.getNode().getType() != GameTileType.BRICK ||
+				this._player.getNode().getType() != GameTileType.BOMB) {
+			System.out.println("created bomb");
+			Bomb b = new Bomb(this._player.getNode(), this._map);
+		}
+	}
 }

@@ -31,6 +31,10 @@ public class PlayerController implements KeyListener {
 		case KeyEvent.VK_RIGHT:
 			this._manager.notifyAction(MoveDirection.RIGHT);
 			break;
+		case KeyEvent.VK_SPACE:
+			System.out.println("sppace");
+			this._manager.notifyBomb();
+			break;
 		}
 		
 	}
